@@ -89,20 +89,27 @@ myCircle.radius
 
 // Inheritance is the way you expect in Scala
 
-class Shape(val x: Double, val y: Double) {
+abstract class Shape(val x: Double, val y: Double) {
   val isAtOrigin: Boolean = x == 0.0 && y == 0.0
-  def description: String = s"Shape at ($x, $y)"
+  def description: String = s"Shape at ($x, $y) with an area of $area sq. units"
+  def area: Double
 }
 
 class ARectangle(x: Double, y: Double, val width: Double, val height: Double) extends Shape(x, y) {
-  override def description: String = s"A Rectangle at ($x, $y)"
+  override def description: String = s"A Rectangle at ($x, $y) with an area of $area sq. units"
+  def area: Double = BigDecimal(width * height).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
 }
 class Square (x: Double, y: Double, width: Double) extends ARectangle(x, y, width, width) {
-  override def description: String = s"A Square at ($x, $y)"
+  override def description: String = s"A Square at ($x, $y) with an area of $area sq. units"
+  // override is required if you are overriding a method of a concrete class
+  override def area: Double = BigDecimal(scala.math.pow(width,2)).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
 }
-class ACircle(x: Double, y: Double, val radius: Double) extends Shape(x,y) {}
+class ACircle(x: Double, y: Double, val radius: Double) extends Shape(x,y) {
+  // override keyword is not required when you implement an abstract method
+  def area: Double = BigDecimal(scala.math.Pi * scala.math.pow(radius,2)).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+}
 
-val rect = new ARectangle(x = 0.0, y = 0.0, width = 10, height = 20)
+val rect = new ARectangle(x = 0.0, y = 0.0, width = 10.2, height = 20.5)
 rect.x
 rect.y
 rect.width
@@ -110,5 +117,12 @@ rect.height
 rect.isAtOrigin
 rect.description
 
-val circle = new ACircle(2.0, 3.0, 7)
+val square = new Square(4,4, 12.3)
+square.x
+square.y
+square.width
+square.height
+square.description
+
+val circle = new ACircle(2.0, 3.0, 7.4)
 circle.description
