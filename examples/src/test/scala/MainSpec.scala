@@ -18,5 +18,23 @@ class MainSpec extends AnyWordSpec with Matchers {
     paul.description should be ("Hi, I am Paul Crane. I am 53 years old.")
   }
 
-  // 3. We would like to write a utility function that, given a list of people, returns only the adults.
+  "companion object" should {
+    val (akira, petra, nick ) = (
+      Person ("Akira", "Sakura", 5),
+      Person ("Petra", "Muller", 34),
+      Person ("Nick", "Tagart", 43)
+    )
+
+    // 3. We would like to write a utility function that, given a list of people, returns only the adults.
+    "should return a list of adult person in a given list" in {
+      val ref = List(akira, petra, nick)
+      Person.filterAdult(ref) should be (List(petra, nick))
+    }
+
+    // 4. If no adult found in the list, the function needs to return an empty list.
+    "should return an empty list if no adult in the list " in {
+      val ref = List(petra, nick, akira)
+      Person.filterAdult(ref) should be(List.empty[Person])
+    }
+  }
 }
