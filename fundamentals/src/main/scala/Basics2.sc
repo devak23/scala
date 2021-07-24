@@ -48,7 +48,41 @@ newAbhay.eq(abhay) // both the references are different
 newAbhay.equals(abhay) // but the object is the same.
 
 // The following line does NOT compile because a case class is immutable
-//newAbhay.age = 43
+// newAbhay.age = 43
 // We will need to create a new instance by using copy
 val aDifferentAbhay = newAbhay.copy(name = "Abhay", age = 43)
 val areTheySameNow = aDifferentAbhay.equals(newAbhay)
+
+
+case class City (name: String, urbanArea: Int)
+
+// Defining a companion object for City which defines some constants. A companion object
+// must be defined in the same file as the class using the keyword "object" followed by the
+// name of the class its accompanying. A companion object is always a singleton. It has
+// its own type and is not an instance of the accompanied class. This object defines
+// static functions or values that are closely related to the class its accompanying. In
+// other words, all static members are defined within the companion object.
+object City {
+  val London = City("London", 1738)
+  val Lausanne = City("Laussane", 153)
+  val Mumbai = City("Mumbai", 72)
+}
+
+case class APerson (firstName: String, lastName: String, city: City)
+
+// Defining a companion object for APerson. Some functions in companion object have
+// special meaning. Functions named 'apply' are constructors of the class. The name
+// 'apply' can be omitted when we call them.
+object APerson {
+  def apply (fullName: String, city: City): APerson = {
+    val split = fullName.split(" ")
+    new APerson(split(0), split(1), city)
+  }
+}
+val p1 = APerson ("Abhay", "Kulkarni", City.Mumbai)
+val p2 = APerson ("Abhay Kulkarni", City.Mumbai)
+val p3 = APerson.apply("Abhay Kulkarni", City.Mumbai)
+
+p1 == p2
+p2 == p3
+p1 == p3
