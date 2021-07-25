@@ -1,6 +1,46 @@
 package com.scala.myprograms.retcalc
 
+import scala.annotation.tailrec
+
 object RetirementCalculator {
+  //val log: Logger = Logger("RetirementCalculator")
+  def noOfMonthsOfSaving2(rateOfInterest: Double
+                          , noOfMonthsToRetirement: Int
+                          , netIncome: Double
+                          , currentExpenses: Double
+                          , initialCapital: Double) :Int = {
+
+    @tailrec
+    def loop(months: Int): Int = {
+      val (_, capitalAfterDeath) = simulatePlan(rateOfInterest, months, noOfMonthsToRetirement, netIncome, currentExpenses, initialCapital)
+      if (capitalAfterDeath > 0.0)
+        months
+      else
+        loop(months + 1)
+    }
+    if (netIncome > currentExpenses)
+      loop(0)
+    else
+      Int.MaxValue
+  }
+
+  def noOfMonthsOfSaving(rateOfInterest: Double
+                         , noOfMonthsToRetirement: Int
+                         , netIncome: Double
+                         , currentExpenses: Double
+                         , initialCapital: Double):Int = {
+    @tailrec
+    def loop(months: Int): Int = {
+      val (_, capitalAfterDeath) = simulatePlan(rateOfInterest, months, noOfMonthsToRetirement, netIncome, currentExpenses, initialCapital)
+      if (capitalAfterDeath > 0.0)
+        months
+      else
+        loop(months + 1)
+    }
+
+    loop(0)
+  }
+
   def simulatePlan(rateOfInterest: Double
                    , noOfMonthsOfSaving: Int
                    , noOfMonthsInRetirement: Int
@@ -19,7 +59,7 @@ object RetirementCalculator {
                     , initialCapital: Double): Double = {
     val monthlySavings = netIncome - currentExpenses
 
-    /**
+    /*
      * For month 0, before any savings, we have a capital (lets call it cap0) of (say 10,000). For month 1, our capital
      * generated some interest. That amount = capital0 * rate of interest. We also saved 1000 more.
      * So we have cap0 + cap0 * rate of interest + monthly savings. Putting it into the formula, we have
@@ -30,9 +70,9 @@ object RetirementCalculator {
 
     def nextCapital (accumulated: Double, noOfMonths: Int): Double = accumulated * (1 + rateOfInterest) + monthlySavings
 
-    /**
+    /*
      * We iterate through the months and apply foldLeft which is similar to a reduce function used in most of the programming
-     * languages. The foldLeft has two parameter lists. SCala allows you to have many parameter lists. Each list can
+     * languages. The foldLeft has two parameter lists. Scala allows you to have many parameter lists. Each list can
      * have one or many parameters. This does not change the behavior of the function rather, its just a way of
      * separating the concerns. The foldLeft takes an operator function (next capital) and acts on the accumulator
      * (initialCapital) for each member of the collection (0 to noOfMonths). It will return the accumulator once it has
