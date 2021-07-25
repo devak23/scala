@@ -32,4 +32,32 @@ class RetirementCalculatorSpec extends AnyWordSpec with Matchers with TypeChecke
       actual should === (expected)
     }
   }
+
+  "calculate how much savings will be left after having taken a pension for n months" in {
+    val actual = RetirementCalculator.futureCapital(
+      rateOfInterest = 0.04/12
+      , noOfMonths = 40 * 12
+      , netIncome = 0
+      , currentExpenses = 2000
+      , initialCapital = 541267.1990
+    )
+    val expected = 309867.53176
+    actual should === (expected)
+  }
+
+  "RetCalc.simulatePlan" should {
+    "calculate the capital at retirement and capital after death" in {
+      val (capitalAtRetirement, capitalAfterDeath) = RetirementCalculator.simulatePlan(
+        rateOfInterest = 0.04/12
+        , noOfMonthsOfSaving = 25  *12
+        , noOfMonthsInRetirement = 40 * 12
+        , netIncome = 3000
+        , currentExpenses = 2000
+        , initialCapital = 10000
+      )
+
+      capitalAtRetirement should === (541267.1990)
+      capitalAfterDeath should === (309867.5316)
+    }
+  }
 }

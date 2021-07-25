@@ -1,12 +1,22 @@
 package com.scala.myprograms.retcalc
 
 object RetirementCalculator {
+  def simulatePlan(rateOfInterest: Double
+                   , noOfMonthsOfSaving: Int
+                   , noOfMonthsInRetirement: Int
+                   , netIncome: Double
+                   , currentExpenses: Double
+                   , initialCapital: Double): (Double, Double) =  {
+    val capitalAtRetirement = futureCapital(rateOfInterest, noOfMonthsOfSaving, netIncome, currentExpenses, initialCapital)
+    val capitalAfterDeath = futureCapital(rateOfInterest, noOfMonthsInRetirement, 0, currentExpenses, capitalAtRetirement)
+    (capitalAtRetirement,capitalAfterDeath)
+  }
+
   def futureCapital(rateOfInterest: Double
                     , noOfMonths: Int
                     , netIncome: Double
                     , currentExpenses: Double
                     , initialCapital: Double): Double = {
-    //541267.199
     val monthlySavings = netIncome - currentExpenses
 
     /**
@@ -33,10 +43,8 @@ object RetirementCalculator {
 
     /**
      * Refactoring the above two lines, we can shorten our implementation as follows:
-     *
      * (0 until noOfMonths).foldLeft(initialCapital)((accumulated,_) => accumulated * (1 + rateOfInterest) + monthlySavings)
-     *
-     * Since the noOfMonths is not used it can be substituted with an underscrore '_'. The '_' cannot be used within a
+     * Since the noOfMonths is not used it can be substituted with an underscore '_'. The '_' cannot be used within a
      * function.
      */
   }
