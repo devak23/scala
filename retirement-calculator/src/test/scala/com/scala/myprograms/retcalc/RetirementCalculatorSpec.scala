@@ -87,7 +87,7 @@ class RetirementCalculatorSpec extends AnyWordSpec with Matchers with TypeChecke
     }
 
     "not loop forever if I enter bad parameters" in {
-      val actual = RetirementCalculator.noOfMonthsOfSaving2(
+      val actual = RetirementCalculator.noOfMonthsOfSaving(
         rateOfInterest = 0.04/12
         , noOfMonthsToRetirement = 40 * 12
         , netIncome = 1000
