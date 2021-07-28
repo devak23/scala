@@ -4,12 +4,19 @@ object RecursiveCalls {
 
   def main(args: Array[String]): Unit = {
     val n = 33
-    println(s"factorial of $n = ${factorial(n)}")
-    println(Int.MaxValue)
+    println(formatResult("abs", -n, abs))
+    println(formatResult("factorial",n,factorial))
     println(s"Fibonacci numbers till $n = ${fibonacci(n)}")
-    println(s"Summation of numbers till $n = ${summation(n)}")
+    println(formatResult("summation", n, summation))
+    println(s"Max value of int: ${Int.MaxValue}")
   }
 
+  private def formatResult(name: String, n: Int, f: Int => Int) : String = {
+    val message = "The %s of %d is %d";
+    message.format(name, n, f(n))
+  }
+
+  def abs(n: Int): Int = if (n < 0) -n else n
 
   def factorial(n: Int): Int = {
     @tailrec
