@@ -126,3 +126,30 @@ square.description
 
 val circle = new ACircle(2.0, 3.0, 7.4)
 circle.description
+
+val weekDays = List("Mon", "Tue", "Wed", "Thu", "Fri")
+
+// Following for loop is not an expression but a statement and breaks the flow of functional programming.
+// Statements are to be avoided as they do not allow chaining of functions.
+for (day <- weekDays) {
+  day match {
+    case "Mon" => println("Just another manic Monday")
+    case otherDay => println (otherDay)
+  }
+}
+
+// By changing the for loop (by adding a yield) it can be changed into an expression
+// The body of the for loop has to be changed to return the values rather than printing
+// them. The return value of such a for loop is a collection and each value corresponds
+// to one iteration of the for loop
+val manicWeekDays = for (day <- weekDays) yield {
+  day match {
+    case "Mon" => "Just another Manic Monday"
+    case otherDay => otherDay
+  }
+}
+
+// The match is an example of Pattern matching and differs from Java switch-case in many ways
+// The match does not offer a fall through. 0 or 1 statements will be matched. Match statements
+// also do not have a break. Like switch-case in java which has a default, there is a "catch all"
+// bucket available as shown in above example - the 'otherDay'
