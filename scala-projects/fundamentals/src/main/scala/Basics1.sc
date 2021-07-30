@@ -153,3 +153,10 @@ val manicWeekDays = for (day <- weekDays) yield {
 // The match does not offer a fall through. 0 or 1 statements will be matched. Match statements
 // also do not have a break. Like switch-case in java which has a default, there is a "catch all"
 // bucket available as shown in above example - the 'otherDay'
+
+// Pattern guards in a for loop will ensure that the for loop will run only when the
+// conditions specified in the pattern guard are met
+val extractMonday =
+for (day <- weekDays if day == "Mon") yield {
+  day
+}
