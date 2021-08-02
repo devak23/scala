@@ -110,3 +110,11 @@ stateCode match {
   case util.Success(code) => code
   case util.Failure(error) => s"Non existent state Code: $error"
 }
+
+val domains = List("com", "edu", "org", "gov")
+val email = "abhayk@gmail.com"
+
+val Array(localPart: String, domainPart: String) = email.split("@")
+
+domains.contains(domainPart)
+
