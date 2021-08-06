@@ -1,10 +1,11 @@
 import java.time.LocalDateTime
 import java.util.UUID
 
-class Account (id: UUID, name: String, openingDate: LocalDateTime) {
+abstract class Account (id: UUID, name: String, openingDate: LocalDateTime) {
   val _id: UUID = id
   var _name: String = name
   val _openingDate: LocalDateTime = openingDate
+  val _accountType: String
 
   // getters
   def getId: UUID = _id
@@ -20,27 +21,37 @@ class Account (id: UUID, name: String, openingDate: LocalDateTime) {
 }
 
 class CreditAccount(name: String) extends Account(name: String) {
-   private val _accountType = "Credit"
-  def getAccountType: String = _accountType
+  override val _accountType: String = "Credit"
 }
 
 class LoanAccount(name: String) extends Account(name: String) {
-  private val _accountType = "Overdraft"
-  def getAccountType: String = _accountType
+  override val _accountType: String = "Loan"
+}
+
+class CheckingAccount(name: String, dateTime: LocalDateTime) extends Account(name: String) {
+  override val _accountType: String = "Checking"
+}
+
+class SavingsAccount(name: String, dateTime: LocalDateTime) extends Account(name: String) {
+  override val _accountType: String = "Savings"
+}
+
+class DMATAccount(name: String) extends Account(name: String) {
+  override val _accountType: String = "DMAT"
 }
 
 object AccountRunner extends App {
-  val checkingAccount = new Account(UUID.randomUUID(), "CheckingAccount", LocalDateTime.now())
-  val savingsAccount = new Account(UUID.randomUUID(), "SavingsAccount", LocalDateTime.now.plusHours(6))
-  val dmatAccount = new Account("DMATAccount")
+  val checkingAccount = new CheckingAccount("My Checking Account", LocalDateTime.now())
+  val savingsAccount = new SavingsAccount("My Savings Account", LocalDateTime.now.plusHours(6))
+  val dmatAccount = new DMATAccount("My DMAT Account")
 
-  println(checkingAccount._id, checkingAccount._name, checkingAccount._openingDate)
-  println(savingsAccount._id, savingsAccount._name, savingsAccount._openingDate)
-  println(dmatAccount._id, dmatAccount._name, dmatAccount._openingDate)
+  println(checkingAccount._id, checkingAccount._name, checkingAccount._openingDate, checkingAccount._accountType)
+  println(savingsAccount._id, savingsAccount._name, savingsAccount._openingDate, savingsAccount._accountType)
+  println(dmatAccount._id, dmatAccount._name, dmatAccount._openingDate, dmatAccount._accountType)
 
   val creditAccount = new CreditAccount("Travel Mastercard")
-  println(creditAccount._id, creditAccount._name, creditAccount._openingDate, creditAccount.getAccountType)
+  println(creditAccount._id, creditAccount._name, creditAccount._openingDate, creditAccount._accountType)
 
   val loanAccount = new LoanAccount(name = "Overdraft Account")
-  println(loanAccount._id, loanAccount._name, loanAccount._openingDate, loanAccount.getAccountType)
+  println(loanAccount._id, loanAccount._name, loanAccount._openingDate, loanAccount._accountType)
 }
