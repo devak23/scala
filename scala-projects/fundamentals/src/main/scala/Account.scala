@@ -1,4 +1,5 @@
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 abstract class Account (id: UUID, name: String, openingDate: LocalDateTime) {
@@ -18,6 +19,8 @@ abstract class Account (id: UUID, name: String, openingDate: LocalDateTime) {
   def this(name: String) {
     this(UUID.randomUUID(), name, LocalDateTime.now())
   }
+
+  override def toString: String = s"You opened a ${_accountType} Account by the name '${_name}' on ${_openingDate.format(DateTimeFormatter.ofPattern("E dd/MM hh:mm a"))}"
 }
 
 class CreditAccount(name: String) extends Account(name: String) {
@@ -45,13 +48,13 @@ object AccountRunner extends App {
   val savingsAccount = new SavingsAccount("My Savings Account", LocalDateTime.now.plusHours(6))
   val dmatAccount = new DMATAccount("My DMAT Account")
 
-  println(checkingAccount._id, checkingAccount._name, checkingAccount._openingDate, checkingAccount._accountType)
-  println(savingsAccount._id, savingsAccount._name, savingsAccount._openingDate, savingsAccount._accountType)
-  println(dmatAccount._id, dmatAccount._name, dmatAccount._openingDate, dmatAccount._accountType)
+  println(checkingAccount)
+  println(savingsAccount)
+  println(dmatAccount)
 
   val creditAccount = new CreditAccount("Travel Mastercard")
-  println(creditAccount._id, creditAccount._name, creditAccount._openingDate, creditAccount._accountType)
+  println(creditAccount)
 
   val loanAccount = new LoanAccount(name = "Overdraft Account")
-  println(loanAccount._id, loanAccount._name, loanAccount._openingDate, loanAccount._accountType)
+  println(loanAccount)
 }
