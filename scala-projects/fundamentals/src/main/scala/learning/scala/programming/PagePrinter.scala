@@ -1,3 +1,5 @@
+package learning.scala.programming
+
 object PagePrinter {
 
   def printPages(doc: Document, lastIndex: Int): Unit =
